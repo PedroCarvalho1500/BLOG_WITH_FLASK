@@ -236,10 +236,10 @@ class DB_Actions():
 
 
 
-    def update_post(self,title,body,author,img_url,subtitle,id):
+    def update_post(self,title,body,img_url,subtitle,id):
         self.connect_db()
 
-        self.cursor.execute(""" UPDATE blog_posts SET title=?, body=?, author=?, img_url=?, subtitle=? WHERE id=?""", (title,body,author,img_url,subtitle,id))
+        self.cursor.execute(""" UPDATE blog_posts SET title=?, body=?, img_url=?, subtitle=? WHERE id=?""", (title,body,img_url,subtitle,id))
         self.conn.commit()
         print("UPDATED...")
         self.disconnect_db()
@@ -516,17 +516,15 @@ def edit_post(post_id):
         #input(date)
         title = new_post_form.blog_post_title.data
         subtitle = new_post_form.blog_subtitle.data
-        author = new_post_form.author_name.data
         img_url = new_post_form.img_url.data
         body_content = new_post_form.body_content.data
         #input("IT WILL BE UPDATED..."+str(title)+str(subtitle)+str(author)+str(img_url)+str(body_content))
-        db_obj.update_post(title,body_content,author,img_url,subtitle, id)
+        db_obj.update_post(title,body_content,img_url,subtitle,id)
         return redirect('/')
     
     else:
         new_post_form.blog_post_title.data = post_to_update[0][1]
         new_post_form.blog_subtitle.data = post_to_update[0][6]
-        new_post_form.author_name.data = post_to_update[0][4]
         new_post_form.img_url.data = post_to_update[0][5]
         new_post_form.body_content.data = post_to_update[0][3]
     return render_template("make-post.html", form=new_post_form, action="EDIT_POST") 
